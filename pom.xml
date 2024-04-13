@@ -8,11 +8,11 @@
 		<version>3.2.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>org.example</groupId>
+	<groupId>br.csi</groupId>
 	<artifactId>pork-manager-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>demo</name>
-	<description>Demo project for Spring Boot</description>
+	<name>pork_manager_api</name>
+	<description>pork_manager_api</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
