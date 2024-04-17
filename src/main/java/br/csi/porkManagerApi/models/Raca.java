@@ -25,24 +25,30 @@ public class Raca {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     @Column(name = "nome", nullable = false, length = 100)
     @NotBlank
     @NotNull
     private String nome;
+
     @Column(name = "descricao", columnDefinition = "TEXT")
     private String descricao;
+
     @NotBlank
     @NotNull
     @Column(name = "caracteristicas", columnDefinition = "TEXT")
     private String caracteristicas;
+
     @OneToMany(mappedBy = "raca")
     @JsonBackReference
     private Set<Suino> suinos;
+
     @CreatedDate
     @Temporal(TemporalType.DATE)
     @Column(name = "criado_em", nullable = false)
     @NotNull
     private Date criadoEm;
+
     @LastModifiedDate
     @Temporal(TemporalType.DATE)
     @Column(name = "atualizado_em", nullable = false)

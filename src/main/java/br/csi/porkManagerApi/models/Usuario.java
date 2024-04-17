@@ -28,26 +28,32 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     @Column(name = "nome", nullable = false, length = 100)
     @NotBlank
     @NotNull
     private String nome;
+
     @Column(name = "cpf", nullable = false, unique = true, length = 11)
     @NotBlank
     @NotNull
     @Size(max = 11)
     private String cpf;
+
     @Column(name = "senha", nullable = false)
     @NotBlank
     @NotNull
     private String senha;
+
     @Enumerated(value = EnumType.STRING)
     @Column(name = "roles", nullable = false)
     @NotNull
     private Role role;
+
     @Column(name = "active", nullable = false)
     @NotNull
     private Boolean active;
+
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<Suino> suinos;
