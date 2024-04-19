@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.Set;
 
 @Entity
-@Table(name = "raca_suino")
+@Table(name = "raca")
 @Getter
 @Setter
 @AllArgsConstructor

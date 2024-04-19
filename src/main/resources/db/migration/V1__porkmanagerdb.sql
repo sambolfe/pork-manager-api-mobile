@@ -15,7 +15,7 @@ CREATE TABLE usuario
     active   BOOLEAN      NOT NULL
 );
 
-CREATE TABLE raca_suino
+CREATE TABLE raca
 (
     id            BIGSERIAL PRIMARY KEY,
     nome          VARCHAR(100) NOT NULL,
@@ -49,12 +49,12 @@ CREATE TABLE suino
     usuario_id      BIGINT       NOT NULL,
     criado_em       DATE         NOT NULL,
     atualizado_em   DATE         NOT NULL,
-    FOREIGN KEY (raca_id) REFERENCES raca_suino (id),
+    FOREIGN KEY (raca_id) REFERENCES raca (id),
     FOREIGN KEY (alojamento_id) REFERENCES alojamento (id),
     FOREIGN KEY (usuario_id) REFERENCES usuario (id)
 );
 
-CREATE TABLE saude_suino
+CREATE TABLE saude
 (
     id                    BIGSERIAL PRIMARY KEY,
     suino_id              BIGINT       NOT NULL,
