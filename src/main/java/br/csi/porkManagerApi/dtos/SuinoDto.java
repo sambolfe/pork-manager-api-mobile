@@ -23,5 +23,7 @@ public record SuinoDto(
         @NotNull
         String tipoSuino,
         @NotNull
-        Long idUsuario
-){}
+        Long idUsuario,
+        @NotNull
+        Long alojamentoId
+) {}

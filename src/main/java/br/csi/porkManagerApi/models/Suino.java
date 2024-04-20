@@ -58,10 +58,6 @@ public class Suino {
     @JoinColumn(name = "alojamento_id", nullable = false)
     private Alojamento alojamento;
 
-    @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
-
     @CreatedDate
     @Temporal(TemporalType.DATE)
     @Column(name = "criado_em", nullable = false)
@@ -74,7 +70,10 @@ public class Suino {
     @NotNull
     private Date atualizadoEm;
 
-    @OneToMany(mappedBy = "suino", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne
+    @JsonBackReference
+    private Usuario usuario;
+    @OneToMany(mappedBy = "suino",  cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<Saude> saudes;
 
