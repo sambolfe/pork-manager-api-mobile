@@ -5,8 +5,6 @@ import jakarta.validation.constraints.NotNull;
 
 public record SuinoUpdateDto(
         @NotNull
-        Long id,
-        @NotNull
         Long idRaca,
         @NotBlank
         @NotNull

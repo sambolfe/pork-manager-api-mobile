@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class SaudeService {
@@ -78,4 +79,12 @@ public class SaudeService {
             throw new Exception(e.getMessage(), e);
         }
     }
+    public Saude getSaude(Long id) {
+        return saudeRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Suino não encontrado com o ID: " + id));
+    }
+    public List<Saude> getAllSaudes() {
+        return saudeRepository.findAll();
+    }
+
 }

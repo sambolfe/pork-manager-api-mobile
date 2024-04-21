@@ -3,11 +3,15 @@ package br.csi.porkManagerApi.controllers;
 import br.csi.porkManagerApi.dtos.SaudeDto;
 import br.csi.porkManagerApi.exceptions.InvalidRequestDataException;
 import br.csi.porkManagerApi.models.Saude;
+import br.csi.porkManagerApi.models.Suino;
 import br.csi.porkManagerApi.services.SaudeService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/saude")
@@ -37,6 +41,23 @@ public class SaudeController {
             }
         }
         throw new InvalidRequestDataException("Os dados enviados são inválidos");
+    }
+
+    @GetMapping("/getSaude/{id}")
+    public ResponseEntity<Saude> getSaude(@Valid @PathVariable Long id)  {
+        if (id != null) {
+            Saude res = saudeService.getSaude(id);
+            if (res != null) {
+                return new ResponseEntity<>(res, HttpStatus.OK);
+            }
+            throw new EntityNotFoundException("Registro de Saude não encontrado!");
+        }
+        throw new InvalidRequestDataException("Identificador de saude não encontrado!");
+    }
+    @GetMapping("/getAllSaudes")
+    public ResponseEntity<List<Saude>> getAllSaudes() {
+        List<Saude> saudes = saudeService.getAllSaudes();
+        return new ResponseEntity<>(saudes, HttpStatus.OK);
     }
 
     private boolean isValidDto(SaudeDto saudeDto) {
