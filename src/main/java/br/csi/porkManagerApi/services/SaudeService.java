@@ -30,13 +30,10 @@ public class SaudeService {
                     .orElseThrow(() -> new EntityNotFoundException("O ID do suíno requisitado não existe!"));
 
             Date currentDate = new Date();
-
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = sdf.parse(saudeDto.dataEntradaCio());
 
             Saude saude = new Saude();
             saude.setPeso(saudeDto.peso());
-            saude.setDataEntradaCio(date);
             saude.setTipoTratamento(saudeDto.tipoTratamento());
             saude.setDataInicioTratamento(sdf.parse(saudeDto.dataInicioTratamento()));
             saude.setObservacoes(saudeDto.observacoes());
@@ -44,12 +41,18 @@ public class SaudeService {
             saude.setAtualizadoEm(currentDate);
             saude.setSuino(suino);
 
+            if (saudeDto.dataEntradaCio() != null && !saudeDto.dataEntradaCio().isBlank()) {
+                Date date = sdf.parse(saudeDto.dataEntradaCio());
+                saude.setDataEntradaCio(date);
+            }
+
             saudeRepository.save(saude);
             return saude;
         } catch (Exception e) {
             throw new Exception(e.getMessage(), e);
         }
     }
+
 
     @Transactional
     public Saude atualizarSaude(SaudeDto saudeDto, Long id) throws Exception {
@@ -61,17 +64,20 @@ public class SaudeService {
                     .orElseThrow(() -> new EntityNotFoundException("O ID da saúde requisitada não existe!"));
 
             Date currentDate = new Date();
-
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = sdf.parse(saudeDto.dataEntradaCio());
 
             saude.setPeso(saudeDto.peso());
-            saude.setDataEntradaCio(date);
             saude.setTipoTratamento(saudeDto.tipoTratamento());
             saude.setDataInicioTratamento(sdf.parse(saudeDto.dataInicioTratamento()));
             saude.setObservacoes(saudeDto.observacoes());
             saude.setAtualizadoEm(currentDate);
             saude.setSuino(suino);
+
+            // Verifica se a data de entrada no cio foi fornecida
+            if (saudeDto.dataEntradaCio() != null && !saudeDto.dataEntradaCio().isBlank()) {
+                Date date = sdf.parse(saudeDto.dataEntradaCio());
+                saude.setDataEntradaCio(date);
+            }
 
             saudeRepository.save(saude);
             return saude;
@@ -79,6 +85,7 @@ public class SaudeService {
             throw new Exception(e.getMessage(), e);
         }
     }
+
     public Saude getSaude(Long id) {
         return saudeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Suino não encontrado com o ID: " + id));

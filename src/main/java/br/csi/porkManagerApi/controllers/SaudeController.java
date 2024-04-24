@@ -65,7 +65,7 @@ public class SaudeController {
                 !saudeDto.tipoTratamento().isBlank() &&
                 !saudeDto.dataInicioTratamento().isBlank() &&
                 saudeDto.peso() != null &&
-                !saudeDto.dataEntradaCio().isBlank() &&
-                saudeDto.idSuino() != null;
+                (saudeDto.dataEntradaCio() == null || !saudeDto.dataEntradaCio().isBlank()) &&
+                (saudeDto.idSuino() == null || saudeDto.idSuino() > 0);
     }
 }
