@@ -140,9 +140,9 @@ public class SuinoService {
         }
     }
 
-    public Suino getSuino(Long id) {
-        return suinoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Suino não encontrado com o ID: " + id));
+    public Suino getSuinoByIdentificacaoOrelha(String identificacaoOrelha) {
+        return suinoRepository.findByIdentificacaoOrelha(identificacaoOrelha)
+                .orElseThrow(() -> new EntityNotFoundException("Suino não encontrado com a identificação da orelha: " + identificacaoOrelha));
     }
 
     public List<Suino> getAllSuinos() {

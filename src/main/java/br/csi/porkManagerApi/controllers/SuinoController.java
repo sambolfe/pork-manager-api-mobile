@@ -59,16 +59,16 @@ public class SuinoController {
         throw new InvalidRequestDataException("Identificador do suino não encontrado!");
     }
 
-    @GetMapping("/getSuino/{id}")
-    public ResponseEntity<Suino> getSuino(@Valid @PathVariable Long id)  {
-        if (id != null) {
-            Suino res = suinoService.getSuino(id);
+    @GetMapping("/getSuinoByOrelha/{identificacaoOrelha}")
+    public ResponseEntity<Suino> getSuinoByOrelha(@Valid @PathVariable String identificacaoOrelha)  {
+        if (identificacaoOrelha != null && !identificacaoOrelha.isEmpty()) {
+            Suino res = suinoService.getSuinoByIdentificacaoOrelha(identificacaoOrelha);
             if (res != null) {
                 return new ResponseEntity<>(res, HttpStatus.OK);
             }
-            throw new EntityNotFoundException("Suino não encontrado!");
+            throw new EntityNotFoundException("Suíno não encontrado com o número de identificação de orelha: " + identificacaoOrelha);
         }
-        throw new InvalidRequestDataException("Identificador do suino não encontrado!");
+        throw new InvalidRequestDataException("Identificação da orelha do suíno não encontrada!");
     }
 
     @GetMapping("/getAllSuinos")

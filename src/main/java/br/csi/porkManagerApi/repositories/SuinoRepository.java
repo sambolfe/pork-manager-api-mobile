@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface SuinoRepository extends JpaRepository<Suino, Long> {
-
+    Optional<Suino> findByIdentificacaoOrelha(String identificacaoOrelha);
 }
