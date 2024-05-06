@@ -77,6 +77,15 @@ public class UsuarioController {
         return new ResponseEntity<>(usuarios, HttpStatus.OK);
     }
 
+    @DeleteMapping("/deleteUsuario/{id}")
+    public ResponseEntity<Boolean> deletarUsuario(@Valid @PathVariable Long id) throws Exception {
+        if (id != null) {
+            boolean res = usuarioService.deletarUsuario(id);
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
+        throw new InvalidRequestDataException("Identificador do usuário não encontrado!");
+    }
+
     private boolean isValidDto(UsuarioDto usuarioDto) {
         return usuarioDto.nome() != null && !usuarioDto.nome().isBlank()
                 && usuarioDto.senha() != null && !usuarioDto.senha().isBlank()

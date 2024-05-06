@@ -97,6 +97,16 @@ public class UsuarioService {
         }
     }
 
+    @Transactional
+    public boolean deletarUsuario(Long id) {
+        try {
+            usuarioRepository.deleteById(id);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public Usuario getUsuario(Long id) {
         return usuarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado!"));
