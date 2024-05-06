@@ -41,7 +41,7 @@ public class UsuarioService {
             usuario.setNome(usuarioDto.nome().toLowerCase());
             usuario.setCpf(usuarioDto.cpf().replaceAll("\\D", ""));
             usuario.setSenha(new BCryptPasswordEncoder().encode(usuarioDto.senha()));
-            usuario.setActive(true);
+            usuario.setActive(usuarioDto.active());
             usuario.setRole(role);
             usuarioRepository.save(usuario);
             return true;
