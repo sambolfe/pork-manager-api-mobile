@@ -28,10 +28,6 @@ public class UsuarioService {
         try {
             Optional<Usuario> isUsuario = usuarioRepository.findByCpf(usuarioDto.cpf());
 
-            if(isUsuario.isPresent()) {
-                throw new InvalidCpfException("CPF já existente no sistema!");
-            }
-
             Usuario.Role role = EnumUtils.stringToEnum(Usuario.Role.class, usuarioDto.role());
             if(role.name().isBlank()) {
                 throw new InvalidEnumException("Permissão de usuário Inválida");
@@ -54,10 +50,6 @@ public class UsuarioService {
     public boolean atualizarUsuario(UsuarioDto usuarioDto, Long id) throws Exception {
         try {
             Optional<Usuario> isUsuario = usuarioRepository.findByCpf(usuarioDto.cpf());
-
-            if(isUsuario.isPresent()) {
-                throw new InvalidCpfException("CPF já existente no sistema!");
-            }
 
             Usuario.Role role = EnumUtils.stringToEnum(Usuario.Role.class, usuarioDto.role());
             if(role.name().isBlank()) {

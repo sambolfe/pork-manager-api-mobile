@@ -7,8 +7,6 @@ public record UsuarioDto(
         @NotBlank
         @NotNull
         String nome,
-        @NotBlank
-        @NotNull
         String cpf,
         @NotBlank
         @NotNull
