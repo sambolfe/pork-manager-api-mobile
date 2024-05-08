@@ -65,5 +65,6 @@ CREATE TABLE saude
     observacoes           TEXT,
     criado_em             DATE           NOT NULL,
     atualizado_em         DATE           NOT NULL,
+    foto BYTEA ,
     FOREIGN KEY (suino_id) REFERENCES suino (id)
 );

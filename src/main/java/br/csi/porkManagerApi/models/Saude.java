@@ -1,6 +1,5 @@
 package br.csi.porkManagerApi.models;
 
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -55,6 +54,9 @@ public class Saude {
 
     @Column(name = "observacoes", columnDefinition = "TEXT")
     private String observacoes;
+
+    @Column(name = "foto", columnDefinition = "BYTEA")
+    private byte[] foto;
 
     @CreatedDate
     @Temporal(TemporalType.DATE)

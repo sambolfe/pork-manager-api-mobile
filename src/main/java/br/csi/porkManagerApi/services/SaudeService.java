@@ -40,6 +40,7 @@ public class SaudeService {
             saude.setCriadoEm(currentDate);
             saude.setAtualizadoEm(currentDate);
             saude.setSuino(suino);
+            saude.setFoto(saudeDto.foto()); // Definindo a foto
 
             if (saudeDto.dataEntradaCio() != null && !saudeDto.dataEntradaCio().isBlank()) {
                 Date date = sdf.parse(saudeDto.dataEntradaCio());
@@ -72,6 +73,7 @@ public class SaudeService {
             saude.setObservacoes(saudeDto.observacoes());
             saude.setAtualizadoEm(currentDate);
             saude.setSuino(suino);
+            saude.setFoto(saudeDto.foto()); // Definindo a foto
 
             // Verifica se a data de entrada no cio foi fornecida
             if (saudeDto.dataEntradaCio() != null && !saudeDto.dataEntradaCio().isBlank()) {

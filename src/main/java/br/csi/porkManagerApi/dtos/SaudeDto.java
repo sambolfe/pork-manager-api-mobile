@@ -22,5 +22,6 @@ public record SaudeDto(
         @Positive
         BigDecimal peso,
         @NotNull
-        Long idSuino
+        Long idSuino,
+        byte[] foto
 ) {}
