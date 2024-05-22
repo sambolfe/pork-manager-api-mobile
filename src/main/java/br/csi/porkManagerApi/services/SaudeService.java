@@ -9,6 +9,9 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -40,11 +43,15 @@ public class SaudeService {
             saude.setCriadoEm(currentDate);
             saude.setAtualizadoEm(currentDate);
             saude.setSuino(suino);
-            saude.setFoto(saudeDto.foto()); // Definindo a foto
 
             if (saudeDto.dataEntradaCio() != null && !saudeDto.dataEntradaCio().isBlank()) {
                 Date date = sdf.parse(saudeDto.dataEntradaCio());
                 saude.setDataEntradaCio(date);
+            }
+
+            if (saudeDto.foto() != null && !saudeDto.foto().isBlank()) {
+                String caminhoFoto = salvarFotoLocalmente(saudeDto.foto().getBytes());
+                saude.setFoto(caminhoFoto);
             }
 
             saudeRepository.save(saude);
@@ -53,7 +60,6 @@ public class SaudeService {
             throw new Exception(e.getMessage(), e);
         }
     }
-
 
     @Transactional
     public Saude atualizarSaude(SaudeDto saudeDto, Long id) throws Exception {
@@ -73,12 +79,15 @@ public class SaudeService {
             saude.setObservacoes(saudeDto.observacoes());
             saude.setAtualizadoEm(currentDate);
             saude.setSuino(suino);
-            saude.setFoto(saudeDto.foto()); // Definindo a foto
 
-            // Verifica se a data de entrada no cio foi fornecida
             if (saudeDto.dataEntradaCio() != null && !saudeDto.dataEntradaCio().isBlank()) {
                 Date date = sdf.parse(saudeDto.dataEntradaCio());
                 saude.setDataEntradaCio(date);
+            }
+
+            if (saudeDto.foto() != null && !saudeDto.foto().isBlank()) {
+                String caminhoFoto = salvarFotoLocalmente(saudeDto.foto().getBytes());
+                saude.setFoto(caminhoFoto);
             }
 
             saudeRepository.save(saude);
@@ -92,8 +101,29 @@ public class SaudeService {
         return saudeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Suino não encontrado com o ID: " + id));
     }
+
     public List<Saude> getAllSaudes() {
         return saudeRepository.findAll();
     }
 
+    private String salvarFotoLocalmente(byte[] foto) throws IOException {
+        // Define o caminho do diretório onde as fotos serão armazenadas
+        String diretorioFotos = "F:/fotoSuinos";
+        File dir = new File(diretorioFotos);
+        if (!dir.exists()) {
+            dir.mkdirs(); // Cria o diretório, se não existir
+        }
+
+        // Gera um nome único para a foto
+        String nomeArquivo = "foto_" + System.currentTimeMillis() + ".jpg";
+        File fotoArquivo = new File(dir, nomeArquivo);
+
+        // Salva a foto no sistema de arquivos
+        try (FileOutputStream fos = new FileOutputStream(fotoArquivo)) {
+            fos.write(foto);
+        }
+
+        // Retorna o caminho completo da foto
+        return fotoArquivo.getAbsolutePath();
+    }
 }

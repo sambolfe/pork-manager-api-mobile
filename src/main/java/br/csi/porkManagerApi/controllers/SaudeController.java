@@ -3,7 +3,6 @@ package br.csi.porkManagerApi.controllers;
 import br.csi.porkManagerApi.dtos.SaudeDto;
 import br.csi.porkManagerApi.exceptions.InvalidRequestDataException;
 import br.csi.porkManagerApi.models.Saude;
-import br.csi.porkManagerApi.models.Suino;
 import br.csi.porkManagerApi.services.SaudeService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -17,15 +16,16 @@ import java.util.List;
 @RequestMapping("/saude")
 public class SaudeController {
     private final SaudeService saudeService;
+
     public SaudeController(SaudeService saudeService) {
         this.saudeService = saudeService;
     }
 
     @PostMapping("/saveSaude")
     public ResponseEntity<Saude> salvarSaude(@Valid @RequestBody SaudeDto saudeDto) throws Exception {
-        if(isValidDto(saudeDto)) {
+        if (isValidDto(saudeDto)) {
             Saude savedSaude = saudeService.salvarSaude(saudeDto);
-            if(savedSaude != null) {
+            if (savedSaude != null) {
                 return new ResponseEntity<>(savedSaude, HttpStatus.OK);
             }
         }
@@ -33,10 +33,10 @@ public class SaudeController {
     }
 
     @PutMapping("/updateSaude/{id}")
-    public ResponseEntity<Saude> salvarSaude(@Valid @RequestBody SaudeDto saudeDto, @Valid @PathVariable Long id) throws Exception {
-        if(isValidDto(saudeDto) && id != null) {
+    public ResponseEntity<Saude> atualizarSaude(@Valid @RequestBody SaudeDto saudeDto, @Valid @PathVariable Long id) throws Exception {
+        if (isValidDto(saudeDto) && id != null) {
             Saude updatedSaude = saudeService.atualizarSaude(saudeDto, id);
-            if(updatedSaude != null) {
+            if (updatedSaude != null) {
                 return new ResponseEntity<>(updatedSaude, HttpStatus.OK);
             }
         }
@@ -44,7 +44,7 @@ public class SaudeController {
     }
 
     @GetMapping("/getSaude/{id}")
-    public ResponseEntity<Saude> getSaude(@Valid @PathVariable Long id)  {
+    public ResponseEntity<Saude> getSaude(@Valid @PathVariable Long id) {
         if (id != null) {
             Saude res = saudeService.getSaude(id);
             if (res != null) {
@@ -54,6 +54,7 @@ public class SaudeController {
         }
         throw new InvalidRequestDataException("Identificador de saude não encontrado!");
     }
+
     @GetMapping("/getAllSaudes")
     public ResponseEntity<List<Saude>> getAllSaudes() {
         List<Saude> saudes = saudeService.getAllSaudes();
@@ -66,6 +67,7 @@ public class SaudeController {
                 !saudeDto.dataInicioTratamento().isBlank() &&
                 saudeDto.peso() != null &&
                 (saudeDto.dataEntradaCio() == null || !saudeDto.dataEntradaCio().isBlank()) &&
-                (saudeDto.idSuino() == null || saudeDto.idSuino() > 0);
+                (saudeDto.idSuino() == null || saudeDto.idSuino() > 0) &&
+                (saudeDto.foto() == null || !saudeDto.foto().isBlank());
     }
 }

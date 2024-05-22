@@ -55,9 +55,6 @@ public class Saude {
     @Column(name = "observacoes", columnDefinition = "TEXT")
     private String observacoes;
 
-    @Column(name = "foto", columnDefinition = "BYTEA")
-    private byte[] foto;
-
     @CreatedDate
     @Temporal(TemporalType.DATE)
     @Column(name = "criado_em", nullable = false)
@@ -69,4 +66,7 @@ public class Saude {
     @Column(name = "atualizado_em", nullable = false)
     @NotNull
     private Date atualizadoEm;
+
+    @Column(name = "foto")
+    private String foto;
 }
