@@ -1,7 +1,7 @@
 -- Inserindo dados na tabela usuario
 INSERT INTO usuario (nome, cpf, senha, roles, active)
-VALUES ('João Silva', '12345678901', '$2a$12$5EnUPOUtkOSrDiOvLM.GROe6xIpBrs9l5NuscONyWGcY36WS0421a', 'ADMIN', TRUE),
-       ('Maria Souza', '98765432101', '$2a$12$5EnUPOUtkOSrDiOvLM.GROe6xIpBrs9l5NuscONyWGcY36WS0421a', 'CRIADOR', TRUE);
+VALUES ('Pedro', '12345678922', '$2a$12$5EnUPOUtkOSrDiOvLM.GROe6xIpBrs9l5NuscONyWGcY36WS0421a', 'ADMIN', TRUE),
+       ('Maria Souza', '98765432131', '$2a$12$5EnUPOUtkOSrDiOvLM.GROe6xIpBrs9l5NuscONyWGcY36WS0421a', 'CRIADOR', TRUE);
 
 -- Inserindo dados na tabela raca
 INSERT INTO raca (nome, descricao, caracteristicas, criado_em, atualizado_em)
