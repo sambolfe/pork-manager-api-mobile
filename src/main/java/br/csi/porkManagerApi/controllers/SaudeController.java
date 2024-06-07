@@ -1,6 +1,7 @@
 package br.csi.porkManagerApi.controllers;
 
 import br.csi.porkManagerApi.dtos.SaudeDto;
+import br.csi.porkManagerApi.dtos.SaudeResponseDto;
 import br.csi.porkManagerApi.exceptions.InvalidRequestDataException;
 import br.csi.porkManagerApi.models.Saude;
 import br.csi.porkManagerApi.services.SaudeService;
@@ -56,9 +57,9 @@ public class SaudeController {
     }
 
     @GetMapping("/getAllSaudes")
-    public ResponseEntity<List<Saude>> getAllSaudes() {
-        List<Saude> saudes = saudeService.getAllSaudes();
-        return new ResponseEntity<>(saudes, HttpStatus.OK);
+    public ResponseEntity<List<SaudeResponseDto>> getAllSaudes() {
+        List<SaudeResponseDto> saudeResponseDtos = saudeService.getAllSaudes();
+        return new ResponseEntity<>(saudeResponseDtos, HttpStatus.OK);
     }
 
     private boolean isValidDto(SaudeDto saudeDto) {
