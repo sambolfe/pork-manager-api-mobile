@@ -13,6 +13,7 @@ public class SaudeResponseDto {
     private Date criadoEm;
     private Date atualizadoEm;
     private String identificadorOrelha;
+    private String foto;
 
     public Long getId() {
         return id;
@@ -84,5 +85,13 @@ public class SaudeResponseDto {
 
     public void setIdentificadorOrelha(String identificadorOrelha) {
         this.identificadorOrelha = identificadorOrelha;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 }
