@@ -8,6 +8,8 @@ import br.csi.porkManagerApi.repositories.SaudeRepository;
 import br.csi.porkManagerApi.repositories.SuinoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -17,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SaudeService {
@@ -51,17 +54,13 @@ public class SaudeService {
                 saude.setDataEntradaCio(date);
             }
 
-            if (saudeDto.foto() != null && !saudeDto.foto().isBlank()) {
-                String caminhoFoto = salvarFotoLocalmente(saudeDto.foto().getBytes());
-                saude.setFoto(caminhoFoto);
-            }
-
             saudeRepository.save(saude);
             return saude;
         } catch (Exception e) {
             throw new Exception(e.getMessage(), e);
         }
     }
+
 
     @Transactional
     public Saude atualizarSaude(SaudeDto saudeDto, Long id) throws Exception {
@@ -82,14 +81,10 @@ public class SaudeService {
             saude.setAtualizadoEm(currentDate);
             saude.setSuino(suino);
 
+            // Verifica se a data de entrada no cio foi fornecida
             if (saudeDto.dataEntradaCio() != null && !saudeDto.dataEntradaCio().isBlank()) {
                 Date date = sdf.parse(saudeDto.dataEntradaCio());
                 saude.setDataEntradaCio(date);
-            }
-
-            if (saudeDto.foto() != null && !saudeDto.foto().isBlank()) {
-                String caminhoFoto = salvarFotoLocalmente(saudeDto.foto().getBytes());
-                saude.setFoto(caminhoFoto);
             }
 
             saudeRepository.save(saude);
@@ -104,6 +99,21 @@ public class SaudeService {
                 .orElseThrow(() -> new EntityNotFoundException("Suino não encontrado com o ID: " + id));
     }
 
+    @Transactional
+    public ResponseEntity<?> deletarSaude(Long id) throws Exception {
+        try {
+            Optional<Saude> saudeOptional = saudeRepository.findById(id);
+            if (saudeOptional.isPresent()) {
+                saudeRepository.deleteById(id);
+                return ResponseEntity.ok().build(); // Retorna 200 OK se a exclusão for bem-sucedida
+            } else {
+                return ResponseEntity.notFound().build(); // Retorna 404 Not Found se o registro não for encontrado
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Ocorreu um erro ao processar a solicitação."); // Retorna 500 Internal Server Error em caso de erro inesperado
+        }
+    }
     @Transactional
     public List<SaudeResponseDto> getAllSaudes() {
         List<Saude> saudes = saudeRepository.findAll();
@@ -126,7 +136,6 @@ public class SaudeService {
 
         return saudesResponse;
     }
-
     private String salvarFotoLocalmente(byte[] foto) throws IOException {
         // Define o caminho do diretório onde as fotos serão armazenadas
         String diretorioFotos = "F:/fotoSuinos";
