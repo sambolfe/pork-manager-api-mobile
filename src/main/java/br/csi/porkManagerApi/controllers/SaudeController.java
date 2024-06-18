@@ -7,7 +7,10 @@ import br.csi.porkManagerApi.models.Saude;
 import br.csi.porkManagerApi.services.SaudeService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +20,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,7 +32,7 @@ import java.util.UUID;
 public class SaudeController {
 
     private final SaudeService saudeService;
-
+    private final String uploadDir = "F:\\FotoSuino\\";
     @Autowired
     public SaudeController(SaudeService saudeService) {
         this.saudeService = saudeService;
@@ -48,19 +52,6 @@ public class SaudeController {
                     .body("Erro ao salvar a saúde: " + e.getMessage());
         }
     }
-
-    private String salvarImagem(MultipartFile foto) throws IOException {
-        if (foto != null && !foto.isEmpty()) {
-            // Lógica para salvar a imagem no diretório desejado
-            String diretorioDestino = "F:\\FotoSuino\\";
-            String nomeArquivo = UUID.randomUUID().toString() + "_" + foto.getOriginalFilename();
-            Path caminhoCompleto = Paths.get(diretorioDestino + nomeArquivo);
-            Files.write(caminhoCompleto, foto.getBytes());
-            return caminhoCompleto.toString();
-        }
-        return null;
-    }
-
     @PutMapping("/updateSaude/{id}")
     public ResponseEntity<Saude> atualizarSaude(
             @Valid @RequestPart("saudeDto") SaudeDto saudeDto,
@@ -96,6 +87,24 @@ public class SaudeController {
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.badRequest()
                     .body("Não é possível excluir saude, pois está sendo referenciado por outras entidades.");
+        }
+    }
+    @GetMapping("/foto/{filename:.+}")
+    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
+        try {
+            Path file = Paths.get(uploadDir).resolve(filename).normalize();
+            Resource resource = new UrlResource(file.toUri());
+            if (resource.exists() && resource.isReadable()) {
+                return ResponseEntity.ok()
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                        .body(resource);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(null);
+            }
+        } catch (MalformedURLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
         }
     }
 

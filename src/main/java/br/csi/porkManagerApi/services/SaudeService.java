@@ -9,6 +9,9 @@ import br.csi.porkManagerApi.repositories.SuinoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -132,12 +135,13 @@ public class SaudeService {
             saudeDto.setAtualizadoEm(saude.getAtualizadoEm());
             saudeDto.setIdentificadorOrelha(saude.getSuino().getIdentificacaoOrelha());
 
+            saudeDto.setFoto(saude.getFoto()); // Configurar o campo foto
+
             saudesResponse.add(saudeDto);
         }
 
         return saudesResponse;
     }
-
     @Transactional
     public ResponseEntity<?> deletarSaude(Long id) throws Exception {
         try {
@@ -159,4 +163,5 @@ public class SaudeService {
 
         return filePath;
     }
+
 }
