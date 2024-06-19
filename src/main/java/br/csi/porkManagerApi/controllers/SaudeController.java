@@ -53,16 +53,19 @@ public class SaudeController {
         }
     }
     @PutMapping("/updateSaude/{id}")
-    public ResponseEntity<Saude> atualizarSaude(
-            @Valid @RequestPart("saudeDto") SaudeDto saudeDto,
-            @RequestPart(value = "foto", required = false) MultipartFile foto,
-            @PathVariable("id") Long id) throws Exception {
-
-        if (isValidDto(saudeDto)) {
-            Saude updatedSaude = saudeService.atualizarSaude(saudeDto, id);
-            return ResponseEntity.ok(updatedSaude);
-        } else {
-            throw new InvalidRequestDataException("Os dados enviados são inválidos");
+    public ResponseEntity<?> atualizarSaude(
+            @ModelAttribute SaudeDto saudeDto,
+            @RequestParam(value = "foto", required = false) MultipartFile foto,
+            @PathVariable("id") Long id) {
+        try {
+            if (foto != null && !foto.isEmpty()) {
+                saudeDto.setFoto(foto);
+            }
+            Saude saudeAtualizada = saudeService.atualizarSaude(saudeDto, id);
+            return ResponseEntity.ok().body(saudeAtualizada);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro ao atualizar a saúde: " + e.getMessage());
         }
     }
 
